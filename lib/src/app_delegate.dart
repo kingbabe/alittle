@@ -1,5 +1,6 @@
 // app
-import 'view.dart';
+import 'view_controller.dart';
+import 'application.dart';
 import 'dart:html';
 
 abstract class AlittleAppDelegate {
@@ -9,36 +10,23 @@ abstract class AlittleAppDelegate {
   void onHide();
   void onError(Error e);
 
-  /// the root view
-  AlittleViewController rootViewController;
+  /// the root view controller
+  AlittleViewController _rootViewController;
+
+  set rootViewController(AlittleViewController controller) {
+    if (controller == null) {
+      throw 'root view controller cannot be null';
+    }
+    _rootViewController = controller;
+    controller.viewDidLoad();
+    document.body.append(controller.render());
+    controller.viewWillAppear();
+    AlittleApplication.sharedApplication().viewControllers = [ controller ];
+  }
+
+  get rootViewController => _rootViewController;
   /// app global scoped data
   /// you can store global data here
   Map<String, Object> data = {};
 }
 
-
-class AlittleViewController {
-  /// view controller scoped data
-  Map<String, Object> _data = {};
-
-  Map<String, Object> get data => _data;
-  set data(Map newValue) {
-    _data = newValue;
-    // TODO: trigger view updates
-  }
-
-  // TODO: view class type
-  View view;
-
-  Node render() => view.render();
-
-  // lifecycle
-  loadView() {}
-  viewDidLoad() {}
-  viewWillAppear() {}
-  viewDidAppear() {}
-  viewDidFirstAppear() {}
-  viewWillDisappear() {}
-  viewDidDisappear() {}
-
-}
