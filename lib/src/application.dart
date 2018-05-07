@@ -18,6 +18,7 @@ void AlittleApplicationRun(AlittleAppDelegate delegate, Map<String, Object> opti
 void _SetRuntimeViewProperties() {
   document.head.append(GlobalStyle);
   var styleSheet = document.styleSheets.last as CssStyleSheet;
+  styleSheet.insertRule('* { -wbkit-touch-callout: none; touch-callout: none; -webkit-user-select: none; user-select: none; }');
   styleSheet.insertRule('* { margin: 0; padding: 0; box-sizing: border-box;}');
   styleSheet.insertRule('html, body { height: 100%; width: 100%; display: flex; background-color: white; }');
   styleSheet.insertRule('.view-controller { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex;}');

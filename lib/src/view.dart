@@ -80,7 +80,12 @@ class Button extends View {
   String get title => _element.text;
   set title(String newValue) => _element.text = newValue;
 
-  set onClick(EventListener listener) => this._element.onClick.listen(listener);
+  /// event related
+  int _touchTimeout = 0;
+
+
+  EventListener onClick;
+  EventListener onLongPress;
 
   Button() {
     this.id = GenerateRandomID();
@@ -89,9 +94,28 @@ class Button extends View {
     this.title = 'button';
     this.classes.add('alittle-button');
     this._element.addEventListener('touchstart', this.touchStart);
+    this._element.addEventListener('touchend', this.touchEnd);
   }
 
-  touchStart(Event e) {}
+  touchStart(Event e) {
+    e.preventDefault();
+    this._element.classes.toggle('$id-active');
+    _touchTimeout = new DateTime.now().millisecondsSinceEpoch;
+  }
+
+  touchEnd(Event e) {
+    this._element.classes.toggle('$id-active');
+    int gap = new DateTime.now().millisecondsSinceEpoch - _touchTimeout;
+    if (gap >= 500) {
+      if (onLongPress != null) {
+        onLongPress(e);
+      }
+    } else {
+      if (onClick != null) {
+        onClick(e);
+      }
+    }
+  }
 
   setStyle(CssStyleDeclaration style, UIStates state) {
     if (style == null) {
@@ -100,10 +124,10 @@ class Button extends View {
     switch (state) {
       case UIStates.normal: break;
       case UIStates.hilighted:
-        GlobalStyleSheet.insertRule('#$id:active {${style.cssText}}');
+        GlobalStyleSheet.insertRule('.$id-active {${style.cssText}}');
         break;
       case UIStates.disabled:
-        GlobalStyleSheet.insertRule('#$id:disabled {${style.cssText}');
+        GlobalStyleSheet.insertRule('.$id-disabled {${style.cssText}');
         break;
       default: break;
     }

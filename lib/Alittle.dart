@@ -1,6 +1,3 @@
-/// Support for doing something awesome.
-///
-/// More dartdocs go here.
 library Alittle;
 
 export 'src/app_delegate.dart';

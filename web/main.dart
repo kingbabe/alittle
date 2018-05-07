@@ -33,13 +33,17 @@ class MyViewController extends AlittleViewController {
 
   @override
   viewDidLoad() {
+    print('hello');
     super.viewDidLoad();
     var btn = new Button();
     CssStyleDeclaration style = new CssStyleDeclaration();
-    style.backgroundColor = 'red';
+    style.backgroundColor = 'green';
     btn.setStyle(style, UIStates.hilighted);
     btn.onClick = (Event e) {
       window.alert('clicked');
+    };
+    btn.onLongPress = (Event e) {
+      window.alert('long pressed');
     };
     this.view.addSubView(btn);
   }
